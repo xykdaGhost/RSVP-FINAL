@@ -10,7 +10,7 @@
 class ParamManage : public JsonWork {
 public:
     static ParamManage& getInstance() {
-        static ParamManage paramManage("/home/mv/release/settings.json");
+        static ParamManage paramManage("/home/mv/release/RSVP-FINAL/settings.json");
         return paramManage;
     }
     ~ParamManage() override { };

@@ -63,19 +63,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-unix:!macx: LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/ -ljsoncpp
-
-INCLUDEPATH += $$PWD/../../../../usr/lib/x86_64-linux-gnu
-DEPENDPATH += $$PWD/../../../../usr/lib/x86_64-linux-gnu
-
-unix:!macx: LIBS += -L$$/usr/local/lib/ -lopencv_core
-unix:!macx: LIBS += -L$$/usr/local/lib/ -lopencv_photo
-unix:!macx: LIBS += -L$$/usr/local/lib/ -lopencv_imgproc
-unix:!macx: LIBS += -L$$/usr/local/lib/ -lopencv_imgcodecs
-
-
-INCLUDEPATH += $$/usr/local/include/opencv4/
-DEPENDPATH += $$/usr/local/include/opencv4/
 
 
 #unix:!macx: LIBS += -L$$PWD/../yolo/RsvpAlgorithm/lib/ -lAlgRoadSeg
@@ -93,10 +80,6 @@ DEPENDPATH += $$/usr/local/include/opencv4/
 #INCLUDEPATH += $$PWD/../yolo/RsvpAlgorithm
 #DEPENDPATH += $$PWD/../yolo/RsvpAlgorithm
 
-unix:!macx: LIBS += -L$$PWD/../../../../usr/local/cuda/targets/aarch64-linux/lib/ -lcudart
-
-INCLUDEPATH += $$PWD/../../../../usr/local/cuda/targets/aarch64-linux/include
-DEPENDPATH += $$PWD/../../../../usr/local/cuda/targets/aarch64-linux/include
 
 unix:!macx: LIBS += -L$$PWD/../yolo/source/cmake-build-debug/ -lmyplugins
 
@@ -137,3 +120,21 @@ unix:!macx: LIBS += -L$$/opt/pylon/lib/ -lGenApi_gcc_v3_1_Basler_pylon
 
 INCLUDEPATH += $$/opt/pylon/include
 DEPENDPATH += $$/opt/pylon/include
+
+unix:!macx: LIBS += -L$$PWD/../../../../usr/local/lib/ -ljsoncpp
+
+INCLUDEPATH += $$PWD/../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../usr/local/include
+
+unix:!macx: LIBS += -L$$PWD/../../../../usr/lib/aarch64-linux-gnu/ -lopencv_core
+unix:!macx: LIBS += -L$$PWD/../../../../usr/lib/aarch64-linux-gnu/ -lopencv_photo
+unix:!macx: LIBS += -L$$PWD/../../../../usr/lib/aarch64-linux-gnu/ -lopencv_imgproc
+unix:!macx: LIBS += -L$$PWD/../../../../usr/lib/aarch64-linux-gnu/ -lopencv_imgcodecs
+
+INCLUDEPATH += $$PWD/../../../../usr/include/opencv4
+DEPENDPATH += $$PWD/../../../../usr/include/opencv4
+
+unix:!macx: LIBS += -L$$PWD/../../../../usr/local/cuda-10.2/lib64/ -lcudart
+
+INCLUDEPATH += $$PWD/../../../../usr/local/cuda-10.2/include
+DEPENDPATH += $$PWD/../../../../usr/local/cuda-10.2/include
