@@ -156,3 +156,7 @@ void ServiceManager::setResultArray(int* v) {
         myResultParam.result[i] = v[i];
     }
 }
+
+void ServiceManager::setCameraConnect(bool v) {
+    mySystemInfoParam.isConnectCamera = v;
+}

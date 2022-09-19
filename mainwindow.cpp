@@ -186,6 +186,7 @@ MainWindow::MainWindow(QWidget *parent)
     ServiceManager::getInstance().setResultModelPointer(model);
     connect(&ServiceManager::getInstance(), SIGNAL(requestSyncResultModel()), this, SLOT(syncResultModelHandler()));
     connect(&ServiceManager::getInstance(), SIGNAL(requestChangeWorkModeButton(int)), this, SLOT(changeWorkModeButtonHandler(int)));
+    connect(&ServiceManager::getInstance(), SIGNAL(requestChangeStartButton(int)), this, SLOT(changeStartButtonHandler(int)));
 }
 
 /**
@@ -239,5 +240,24 @@ void MainWindow::changeWorkModeButtonHandler(int workMode) {
         ui->debugModeButton->setEnabled(false);
         ui->workModeButton->setEnabled(true);
         ui->showModeButton->setEnabled(true);
+    }
+}
+
+void MainWindow::changeStartButtonHandler(int isStart) {
+    if (isStart == true) {
+        ui->playButton->setText("停止");
+        ui->nextButton->setEnabled(false);
+        ui->previousButton->setEnabled(false);
+        if (manager->getGlobalControlParam().workMode == WORKMODE_SHOW) {
+            _timerId = startTimer(1300);
+        }
+    }
+    else {
+        ui->playButton->setText("启动");
+        ui->nextButton->setEnabled(true);
+        ui->previousButton->setEnabled(true);
+        ServiceManager::getInstance().setIsStart(false);
+        ServiceManager::getInstance().requestUartMessage(ASK_CONTROL);
+        killTimer(_timerId);
     }
 }

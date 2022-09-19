@@ -32,7 +32,7 @@ void Uart::init()
 void Uart::handle_data()
 {
     QByteArray data = port->readAll();
-   // qDebug() << "receive : " << data.toHex();
+    qDebug() << "receive : " << data.toHex();
     on_receive(data);
 }
 
@@ -150,16 +150,17 @@ void Uart::on_receive(QByteArray tmpdata) {
                 ack_mode();
             }
             else if (tmpdata[3] == 0x10) {
+                qDebug() << "isStart: " << tmpdata[4];
+                if (tmpdata[4] == 1) {
+                    ServiceManager::getInstance().setIsStart(true);
+                } else {
+                    ServiceManager::getInstance().setIsStart(false);
+                }
                 ack_control();
-
-
-
+                ServiceManager::getInstance().requestChangeStartButton(tmpdata[4]);
             }
             else if (tmpdata[3] == 0x11) {
-
-                    ack_controlStatus(2);
-
-
+                ack_controlStatus(2-ServiceManager::getInstance().getGlobalControlParam().isStart);
             }
             else if (tmpdata[3] == 0x80) {
 

@@ -138,9 +138,23 @@ void GenCamera::acquireImage() {
     std::cout << endl;
     std::cout << "new grab" << endl;
 
+
+
+
+    if(!_camera) {
+        return;
+        ServiceManager::getInstance().setCameraConnect(false);
+    }
+
+    if (_camera->IsCameraDeviceRemoved()) {
+        return;
+        ServiceManager::getInstance().setCameraConnect(false);
+    }
+
+
     CGrabResultPtr ptr;
     try {
-
+        ServiceManager::getInstance().setCameraConnect(true);
         auto t1 = std::chrono::steady_clock::now();
         if (_camera->IsGrabbing())
         {
@@ -351,11 +365,12 @@ void GenCamera::setFixWhiteBalance(bool flag) {
         return;
     if (flag) { //fixed
 
-        _camera->LightSourceSelector.SetValue(LightSourceSelector_Daylight);
+        _camera->LightSourceSelector.SetValue(LightSourceSelector_Daylight6500K);
 
+//        _camera->BalanceWhiteAuto.SetValue(BalanceWhiteAuto_Continuous);
         _camera->BalanceWhiteAuto.SetValue(BalanceWhiteAuto_Off);
         _camera->BalanceRatioSelector.SetValue(BalanceRatioSelector_Blue);
-        _camera->BalanceRatioAbs.SetValue(1.5);//2.28125
+        _camera->BalanceRatioAbs.SetValue(2.28125);//2.28125
     }
     //auto
     else {

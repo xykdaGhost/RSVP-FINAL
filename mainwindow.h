@@ -27,6 +27,7 @@ public:
 public slots:
     void syncResultModelHandler();
     void changeWorkModeButtonHandler(int workMode);
+    void changeStartButtonHandler(int isStart);
 
 private:
     Ui::MainWindow *ui;

@@ -43,7 +43,7 @@ typedef struct {
 
 typedef struct {
     QDateTime startTime;
-    int isConnectCamera;
+    bool isConnectCamera;
     int storage;
     int upTime;
 } systemInfoParam;
@@ -58,7 +58,7 @@ typedef struct {
 
 typedef struct {
     int workMode;
-    int isStart;
+    bool isStart;
     int scheduleCount;
 
 } globalControlParam;
@@ -107,12 +107,14 @@ public:
     void setUpTime(int v);
     void setDetectRes(std::vector<std::pair<int, double>> v1, std::vector<double> v2);
     void setResultArray(int* v);
+    void setCameraConnect(bool v);
 
 signals:
     void requestUartMessageSignal(int id);
     void requestSyncResultModel();
     void requestAcquireImage();
     void requestChangeWorkModeButton(int workMode);
+    void requestChangeStartButton(int isStart);
 
 private:
     explicit ServiceManager();
