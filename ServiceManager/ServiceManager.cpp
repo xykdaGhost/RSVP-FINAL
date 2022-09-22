@@ -1,5 +1,6 @@
 #include "ServiceManager.h"
 #include "../JsonWork/ParamManage.h"
+#include <QDebug>
 
 ServiceManager::ServiceManager()
 {
@@ -12,6 +13,7 @@ ServiceManager::ServiceManager()
 
     myGlobalControlParam.workMode = WORKMODE_WORK;
 
+    mySystemInfoParam.isConnectCamera = false;
 }
 
 ServiceManager::~ServiceManager()
@@ -159,4 +161,8 @@ void ServiceManager::setResultArray(int* v) {
 
 void ServiceManager::setCameraConnect(bool v) {
     mySystemInfoParam.isConnectCamera = v;
+}
+
+void ServiceManager::setLevel(int v) {
+    myResultParam.level = v;
 }

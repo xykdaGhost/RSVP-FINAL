@@ -165,18 +165,19 @@ void ResultModel::setData(std::vector<std::pair<int, double>> data, std::vector<
 
    int result[12] = {0};
    result[0]    = _results[0][1].value<int>();
-   result[1]    = _results[0][2].value<int>() / 10;
-   result[2]    = _results[0][3].value<int>();
+   result[2]    = _results[0][2].value<int>() / 10;
+   result[1]    = _results[0][3].value<int>();
    result[3]    = _results[1][1].value<int>();
-   result[4]    = _results[1][2].value<int>() / 10;
-   result[5]    = _results[1][3].value<int>();
+   result[5]    = _results[1][2].value<int>() / 10;
+   result[4]    = _results[1][3].value<int>();
    result[6]    = _results[2][1].value<int>();
-   result[7]    = _results[2][2].value<int>() / 10;
-   result[8]    = _results[2][3].value<int>();
+   result[8]    = _results[2][2].value<int>() / 10;
+   result[7]    = _results[2][3].value<int>();
    result[9]    = _results[3][1].value<int>();
-   result[10]   = _results[3][2].value<int>() / 10;
-   result[11]   = _results[3][3].value<int>();
+   result[11]   = _results[3][2].value<int>() / 10;
+   result[10]   = _results[3][3].value<int>();
    ServiceManager::getInstance().setResultArray(result);
+   ServiceManager::getInstance().setLevel(_trashLevel);
    emit dataChanged(createIndex(0,0), createIndex(rowCount(), columnCount()));
 }
 

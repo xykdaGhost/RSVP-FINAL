@@ -39,6 +39,7 @@ typedef struct {
     int result[12];
     std::vector<std::pair<int, double>> detectRes;
     std::vector<double> maxBox;
+    int level;
 } resultParam;
 
 typedef struct {
@@ -108,6 +109,7 @@ public:
     void setDetectRes(std::vector<std::pair<int, double>> v1, std::vector<double> v2);
     void setResultArray(int* v);
     void setCameraConnect(bool v);
+    void setLevel(int v);
 
 signals:
     void requestUartMessageSignal(int id);

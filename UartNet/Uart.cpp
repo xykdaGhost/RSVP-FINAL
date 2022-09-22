@@ -32,7 +32,7 @@ void Uart::init()
 void Uart::handle_data()
 {
     QByteArray data = port->readAll();
-    qDebug() << "receive : " << data.toHex();
+    //qDebug() << "receive : " << data.toHex();
     on_receive(data);
 }
 
@@ -111,7 +111,7 @@ void Uart::on_receive(QByteArray tmpdata) {
                 }
             }
             else if (tmpdata[2] == 0x07) {
-                    ack_connect(1);
+                    ack_connect(ServiceManager::getInstance().getSystemInfoParam().isConnectCamera);
             }
 
 
@@ -203,8 +203,6 @@ void Uart::ack_search() {
     data[3] = 0x01;
     data[4] = (data[2]+data[3])%256;
     data[5] = 0xeb;
-    qDebug() << "write thread is :" << QThread::currentThread();
-    qDebug() << "can write ? :" << port->isWritable();
     port->write(data, 6);
 
     //qDebug() << "ack serach";
@@ -405,20 +403,41 @@ void Uart::ask_param(int expoTime, int maxExpoTime, int gain, int shootInterval,
 //    qDebug() << "autoExpo:" << mode << ParamManage::getInstance().model()->paramStruct().alg.autoExpo;
 }
 
-void Uart::ask_result(int *result) {
+void Uart::ask_result(int *result, int level) {
+
     QByteArray data;
     data.resize(18);
     data[0] = 0xea;
-    data[1] = 0x0e;
+    data[1] = 0x0f;
     data[2] = 0x00;
     data[3] = 0x62;
     for (int i = 0; i < 12; i++)
     {
         data[i+4] = (uchar)result[i];
     }
-    data[16] = (data[2]+data[3]+data[4]+data[5]+data[6]+data[7]+data[8]+data[9]+data[10]+data[11]+data[12]+data[13]+data[14]+data[15])%256;
-    data[17] = 0xeb;
-    port->write(data, 18);
+
+    for (int i = 0; i < 4; i ++) {
+
+        if ((result[1 + 3*i] > 251) && (result[1 + 3*i] < 400)) {
+            data[5 + 3*i] = 251;
+        }
+        else if ((result[1 + 3*i] > 400) && (result[1 + 3*i] < 1000)) {
+            data[5 + 3*i] = 252;
+        }
+        else if ((result[1 + 3*i] > 1000) && (result[1 + 3*i] < 3000)) {
+            data[5 + 3*i] = 253;
+        }
+        else if ((result[1 + 3*i] > 3000) && (result[1 + 3*i] < 8000)) {
+            data[5 + 3*i] = 254;
+        }
+        else if (result[1 + 3*i] > 8000) {
+            data[5 + 3*i] = 255;
+        }
+    }
+    data[16] = (uchar)level;
+    data[17] = (data[2]+data[3]+data[4]+data[5]+data[6]+data[7]+data[8]+data[9]+data[10]+data[11]+data[12]+data[13]+data[14]+data[15]+data[16])%256;
+    data[18] = 0xeb;
+    port->write(data, 19);
 
     qDebug() << "ask result : " << data.toHex() ;
 }
@@ -609,7 +628,7 @@ void Uart::sendUartMessageHandler(int id) {
         break;
     case 14:{
 
-        ask_result(ServiceManager::getInstance().getResultParam().result);
+        ask_result(ServiceManager::getInstance().getResultParam().result, ServiceManager::getInstance().getResultParam().level);
         break;
     }
     case 15:
@@ -622,7 +641,7 @@ void Uart::sendUartMessageHandler(int id) {
         ask_save(ServiceManager::getInstance().getAlgParam().yolo << 1 | ServiceManager::getInstance().getCaptureParam().saveRaw);
         break;
     case 18:
-        ack_connect(ServiceManager::getInstance().getSystemInfoParam().isConnectCamera);
+        ack_connect(2-ServiceManager::getInstance().getSystemInfoParam().isConnectCamera);
         break;
     case 19:
         ack_speed();

@@ -267,10 +267,10 @@ void GenCamera::acquireImage() {
 
             _yoloAlg->handleImage(target, target, detectRes, max_box);//, photoName, ParamManage::getInstance().model()->paramStruct().capture.savePath + "/" + ServiceManager::getInstance().getShootInfoParam().shootTime.toString("yyyyMMdd_hh_mm").toStdString() + "/res/ylabel/");
             ServiceManager::getInstance().setDetectRes(detectRes, max_box);
-            ServiceManager::getInstance().requestUartMessage(ASK_RESULT);
         }
 
         ServiceManager::getInstance().requestSyncResultModel();
+        ServiceManager::getInstance().requestUartMessage(ASK_RESULT);
 
         //convert the image from cv::Mat in 16bits to QImage in 8bits for display
         QImage sendimage(QSize(2432, 896), QImage::Format::Format_RGB888);

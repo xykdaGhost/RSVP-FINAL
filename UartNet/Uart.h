@@ -73,7 +73,7 @@ private:
     void ack_param();
     void ack_paramStatus(int expoTime, int maxExpoTime, int gain, int shootInterval, int saveInterval, int mode);
     void ask_param(int expoTime, int maxExpoTime, int gain, int shootInterval, int saveInterval, int mode);
-    void ask_result(int *result);
+    void ask_result(int *result, int level);
     void ack_save();
     void ack_saveStatus(uchar m);
     void ask_save(uchar m);
